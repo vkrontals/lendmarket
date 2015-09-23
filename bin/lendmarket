@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'lendmarket'
+
+quote = Lendmarket::Quote.new
+quote.calculate
