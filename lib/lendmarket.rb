@@ -8,13 +8,15 @@ module Lendmarket
     attr_reader :amount, :markets, :term
 
     VALID_AMOUNT = (1000..15000).step(100).to_a
+    Market = Struct.new( :rate, :available)
 
     def initialize(args)
       raise Lendmarket::InvalidAmount unless VALID_AMOUNT.include?(args[:amount])
 
       @amount = args[:amount]
-      @markets = args[:markets]
+      @markets = marketify args[:markets]
       @term = args[:term]
+      raise Lendmarket::NotEnoughMoney if amount > money_available
     end
 
     def print
@@ -30,18 +32,16 @@ module Lendmarket
 
     def rate
       val = sorted_markets
-        .reduce({ total_available: 0, weighted_rate: 0 }) do |x, y|
-          if x[:total_available] < amount
-            x[:total_available] += y[:available]
-            x[:weighted_rate] += y[:rate] * y[:available]
-          end
+       .reduce([]) do |result, market|
+         result << market if money_available(result) < amount
+         result
+       end
 
-        x
-      end
+      val.reduce(0) { |sum, n| sum + n.rate } / val.length
+    end
 
-      raise Lendmarket::NotEnoughMoney if amount > val[:total_available]
-
-      val[:weighted_rate] / val[:total_available]
+    def money_available(markets_array = markets)
+      markets_array.reduce(0) { |sum, n| sum + n.available }
     end
 
     def monthly_repayment
@@ -50,6 +50,16 @@ module Lendmarket
 
     def monthly_rate
       (1 + rate) ** (1 / 12.0) - 1
+    end
+
+    def marketify(markets_array)
+      markets_array.reduce([]) do |result, lender|
+        (lender[:available] / 10).times do
+          result << Market.new(lender[:rate], 10)
+        end
+
+        result
+      end
     end
 
     private
