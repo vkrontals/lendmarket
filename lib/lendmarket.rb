@@ -19,12 +19,23 @@ module Lendmarket
       raise Lendmarket::NotEnoughMoney if amount > money_available
     end
 
+    def calc
+      {
+        requested_amount: amount,
+        rate: (rate * 100).round(1),
+        monthly_repayment: monthly_repayment.round(2),
+        total_repayment: total_repayment.round(2)
+      }
+    end
+
     def print
       puts "Requested amount: £%d" % amount
       puts "Rate: %.1f%" % (rate * 100)
       puts "Monthly repayment: £%.2f" % monthly_repayment.round(2)
       puts "Total repayment: £%.2f" % total_repayment
     end
+
+    private
 
     def total_repayment
       monthly_repayment * term
@@ -61,8 +72,6 @@ module Lendmarket
         result
       end
     end
-
-    private
 
     def sorted_markets
       markets.sort_by { |x| x[:rate] }

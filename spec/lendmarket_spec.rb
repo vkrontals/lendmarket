@@ -32,9 +32,18 @@ describe Lendmarket::Quote  do
   end
 
   describe "#print" do
+    let(:quote) { Lendmarket::Quote.new({ amount: 1000, term: 36, markets: markets }) }
+    let (:result) {
+      {
+        requested_amount: 1000,
+        rate: 7.0,
+        monthly_repayment: 30.78,
+        total_repayment: 1108.10
+      }
+    }
 
+    it { expect(quote.calc).to eq(result) }
     it "returns a correct quote" do
-      quote = Lendmarket::Quote.new({ amount: 1000, term: 36, markets: markets })
 
       [ 'Requested amount: £1000',
         'Rate: 7.0%',
@@ -46,43 +55,31 @@ describe Lendmarket::Quote  do
       quote.print
     end
 
-
   end
 
   describe "#total_repayment" do
     let(:quote) { Lendmarket::Quote.new({ amount: 1000, term: 36, markets: markets }) }
 
-    it 'returns correct total repayment' do
-      expect(quote.send :total_repayment).to be_within(0.01).of(1108.10)
-    end
+    it { expect(quote.send :total_repayment).to be_within(0.01).of(1108.10) }
 
   end
 
   describe "#rate" do
     let(:quote) { Lendmarket::Quote.new({ amount: 1000, term: 36, markets: markets }) }
 
-    it 'calculates the lowest rate for a given market' do
-      expect(quote.send :rate).to be_within(0.01).of(0.07)
-    end
-
+    it { expect(quote.send :rate).to be_within(0.01).of(0.07) }
   end
 
-  describe "#monthly_repayment"  do
+  describe "#monthly_repayment" do
     let(:quote) { Lendmarket::Quote.new({ amount: 1000, term: 36, markets: markets }) }
 
-    it 'calculates the monthly repayment amount' do
-      expect(quote.send :monthly_repayment).to be_within(0.01).of(30.78)
-    end
-
+    it { expect(quote.send :monthly_repayment).to be_within(0.01).of(30.78) }
   end
 
   describe "#monthly_rate" do
     let(:quote) { Lendmarket::Quote.new({ amount: 1000, term: 36, markets: markets }) }
 
-    it 'calculates the monthly repayment amount' do
-      expect(quote.send :monthly_rate).to be_within(0.001).of(0.005)
-    end
-
+    it { expect(quote.send :monthly_rate).to be_within(0.001).of(0.005) }
   end
 
   describe "#marketify" do
@@ -104,10 +101,7 @@ describe Lendmarket::Quote  do
   describe "#money_available" do
     let(:quote) { Lendmarket::Quote.new({ amount: 1000, term: 36, markets: markets }) }
 
-    it 'calculates the total money available' do
-      expect(quote.money_available).to eq 2330
-    end
-
+    it { expect(quote.money_available).to eq 2330 }
   end
 
 end
