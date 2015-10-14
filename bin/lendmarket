@@ -2,5 +2,6 @@
 
 require 'lendmarket'
 
-quote = Lendmarket::Quote.new
-quote.calculate
+quote = Lendmarket::Quote.new({ amount: 1000, term: 36, markets: [{ rate: 0.09, available: 1500 }] })
+quote.print
+
