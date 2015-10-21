@@ -18,11 +18,4 @@ HERE
 
   end
 
-  describe '#numberify' do
-    it { expect(Lendmarket::CSVTools.numberify "10").to eq 10  }
-    it { expect(Lendmarket::CSVTools.numberify "0.004").to eq 0.004  }
-    it { expect(Lendmarket::CSVTools.numberify 'a string').to eq 'a string'  }
-    it { expect(Lendmarket::CSVTools.numberify '^$£%23').to eq '^$£%23'  }
-  end
-
 end

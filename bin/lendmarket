@@ -1,7 +1,38 @@
 #!/usr/bin/env ruby
 
 require 'lendmarket'
+require 'csv_tools'
 
-quote = Lendmarket::Quote.new({ amount: 1000, term: 36, markets: [{ rate: 0.09, available: 1500 }] })
-quote.print
+TERM = 36
+class NoMarketFile < StandardError; end
 
+begin
+  raise NoMarketFile if ARGV[0].nil?
+
+  csv_data = File.read(ARGV[0])
+  markets_hash = Lendmarket::CSVTools.csv_to_hash csv_data
+  quote = Lendmarket::Quote.new({ amount: ARGV[1].to_i, term: TERM, markets: markets_hash }).calc
+
+  puts "Requested amount: £%d" % quote[:requested_amount]
+  puts "Rate: %.1f%" % quote[:rate]
+  puts "Monthly repayment: £%.2f" % quote[:monthly_repayment]
+  puts "Total repayment: £%.2f" % quote[:total_repayment]
+
+rescue Errno::ENOENT
+  puts 'Markets file not found, check the path and try again'
+
+rescue Lendmarket::NotEnoughMoney
+  puts 'Sorry, it is not possible to provide a quote at this time'
+
+rescue Lendmarket::InvalidAmount
+  valid_amount_txt = Lendmarket::Quote::VALID_AMOUNT.minmax.join(' and ')
+  puts 'The seleced loan amount is not valid'
+  puts "You must choose an amount between #{ valid_amount_txt } in 100 increments"
+
+rescue NoMarketFile
+  puts 'You must provide a markets file'
+
+ensure
+  puts "\n\nusage: lendmarket [market] [loan_amount]"
+
+end

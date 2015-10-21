@@ -31,32 +31,6 @@ describe Lendmarket::Quote  do
 
   end
 
-  describe "#print" do
-    let(:quote) { Lendmarket::Quote.new({ amount: 1000, term: 36, markets: markets }) }
-    let (:result) {
-      {
-        requested_amount: 1000,
-        rate: 7.0,
-        monthly_repayment: 30.78,
-        total_repayment: 1108.10
-      }
-    }
-
-    it { expect(quote.calc).to eq(result) }
-    it "returns a correct quote" do
-
-      [ 'Requested amount: £1000',
-        'Rate: 7.0%',
-        'Monthly repayment: £30.78',
-        'Total repayment: £1108.10' ].each do |message|
-        expect(STDOUT).to receive(:puts).with(message)
-      end
-
-      quote.print
-    end
-
-  end
-
   describe "#total_repayment" do
     let(:quote) { Lendmarket::Quote.new({ amount: 1000, term: 36, markets: markets }) }
 
@@ -101,7 +75,7 @@ describe Lendmarket::Quote  do
   describe "#money_available" do
     let(:quote) { Lendmarket::Quote.new({ amount: 1000, term: 36, markets: markets }) }
 
-    it { expect(quote.money_available).to eq 2330 }
+    it { expect(quote.send :money_available).to eq 2330 }
   end
 
 end

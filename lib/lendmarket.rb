@@ -28,13 +28,6 @@ module Lendmarket
       }
     end
 
-    def print
-      puts "Requested amount: £%d" % amount
-      puts "Rate: %.1f%" % (rate * 100)
-      puts "Monthly repayment: £%.2f" % monthly_repayment.round(2)
-      puts "Total repayment: £%.2f" % total_repayment
-    end
-
     private
 
     def total_repayment
@@ -65,7 +58,7 @@ module Lendmarket
 
     def marketify(markets_array)
       markets_array.reduce([]) do |result, lender|
-        (lender[:available] / 10).times do
+        (lender[:available].to_i / 10).times do
           result << Market.new(lender[:rate], 10)
         end
 
