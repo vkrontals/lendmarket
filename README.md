@@ -1,6 +1,6 @@
 # Lendmarket
 
-TODO: Write a gem description
+Command line gem for calculating a loan quote from a market of lenders
 
 ## Installation
 
@@ -20,11 +20,11 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ lendmarket [market.csv] [loan_amount]
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/lendmarket/fork )
+1. Fork it ( https://github.com/vkrontals/lendmarket/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

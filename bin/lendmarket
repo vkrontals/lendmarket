@@ -33,6 +33,6 @@ rescue NoMarketFile
   puts 'You must provide a markets file'
 
 ensure
-  puts "\n\nusage: lendmarket [market] [loan_amount]"
+  puts "\n\nusage: lendmarket [market.csv] [loan_amount]"
 
 end

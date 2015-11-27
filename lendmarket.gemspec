@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Valters Krontals"]
   spec.email         = ["v.krontals@gmail.com"]
   spec.summary       = %q{Command line tool to get the best rate}
-  spec.description   = %q{Yada yada yada.}
-  spec.homepage      = ""
+  spec.description   = %q{Get the best rate from lenders}
+  spec.homepage      = "https://github.com/vkrontals/lendmarket"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -20,5 +20,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rspec", "~> 3.3"
 end
